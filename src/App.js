@@ -1,25 +1,36 @@
-import logo from './logo.svg';
-import './App.css';
+import React, {useContext} from "react";
+import { Routes,Route } from "react-router-dom";
+import Add from "./components/Add";
+import Editi from "./components/Editi";
+import Filme from "./components/Filme";
+import Home from "./components/Home"
+import Login from "./components/Login";
+import Noticia from "./components/Noticia";
+import Serie from "./components/Serie";
+import { ContextApi } from "./context/context";
+
 
 function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+  const {autentificado} = useContext(ContextApi) 
+
+  const Privit = ({children})=>{
+  if(!autentificado){
+      return <Login />
+    }
+    return children
+  }
+
+  return (<div>
+    <Routes>
+      <Route path='/' element={<Home />} />
+      <Route path='/noticia/:id' element={<Noticia />} />
+      <Route path='/filme' element={<Filme />} />
+      <Route path='/serie' element={<Serie />} />
+      <Route path='/login' element={<Login />} />
+      <Route path='/add' element={<Privit><Add /></Privit>} />
+      <Route path='/edit' element={<Privit><Editi /></Privit>} />
+    </Routes>
+</div>);
 }
 
 export default App;
